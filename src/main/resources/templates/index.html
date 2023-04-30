@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-3 bg-light p-3 border">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="http://localhost:8989">
+                    <i class="bi bi-house-door"></i>
+                    Home</a>
+                <a class="nav-link" href="http://localhost:8989/product/">
+                    <i class="bi bi-boxes"></i>
+                    Product</a>
+                <a class="nav-link" href="http://localhost:8989/category/">
+                    <i class="bi bi-bookmark"></i>
+                    Category</a>
+                <a class="nav-link" href="http://localhost:8989/supplier/">
+                    <i class="bi bi-building"></i>
+                    Supplier</a>
+                <a class="nav-link" href="http://localhost:8989/login/">
+                    <i class="bi bi-person-fill"></i>
+                    User</a>
+                <a class="nav-link" href="http://localhost:8989/buy/">
+                    <i class="bi bi-card-list"></i>
+                    Pembelian</a>
+                <a class="nav-link" href="http://localhost:8989/customer/">
+                    <i class="bi bi-people"></i>
+                    Customer</a>
+                <a class="nav-link" href="http://localhost:8989/report/">
+                    <i class="bi bi-journal-text"></i>
+                    Laporan Penjualan</a>
+                <a class="nav-link" href="http://localhost:8989/buy-report/">
+                    <i class="bi bi-journal-text"></i>
+                    Laporan Pembelian</a>
+                <a class="nav-link" href="http://localhost:8989/cash-report/">
+                    <i class="bi bi-journal-text"></i>
+                    Laporan Kas</a>
+
+            </nav>
+
+        </div>
+        <div class="col-9">
+            <h2 class="text mt-3">Input Penjualan</h2>
+            <form class="search mt-3" th:action="@{/search/{id}}" method="get">
+                <input type="number" name="id" th:value="${id}" placeholder="Input Product Id" size="50">
+<!--                <span th:if="${#fields.hasErrors('id')}" th:class="${#fields.hasErrors('id')}? error">Data masih kosong!!</span>-->
+                <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i></button>
+            </form>
+
+            <form action="#" th:action="@{/add-sell}" th:object="${sell}" method="post"
+                  xmlns:th="http://www.w3.org/1999/xhtml">
+                <div class="row g-3 align-items-center mt-5">
+                    <div class="col-auto">
+                        <select th:field="*{customers}" class="form-control" id="customers">
+                            <option value="0">Select Customer</option>
+                            <option th:each="cus : ${cusOption}" th:value="${cus.id}"
+                                    th:text="${cus.name}+${cus.phone}"></option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('customers')}" th:errors="*{customers}"></span>
+                    </div>
+                    <div class="col-auto">
+                        <select th:field="*{products}" class="form-control" id="products">
+                            <option value="0">Select Product</option>
+                            <option th:each="product : ${options}" th:value="${product.id}"
+                                    th:text="${product.kode_brg}+${product.name}+${product.price}"></option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('products')}" th:errors="*{products}"></span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" th:field="*{quantity}" id="quantity" placeholder="quantity"
+                               class="form-control">
+                        <span th:if="${#fields.hasErrors('quantity')}" th:class="${#fields.hasErrors('quantity')}? error">Data masih kosong!!</span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="submit" value="Add Sell">
+                    </div>
+                </div>
+            </form>
+
+            <table class="table mt-5" th:id="table">
+                <thead>
+                <tr>
+                    <th>Kode brg</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Jumlah</th>
+                    <th>Subtotal</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sell : ${sells}">
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${pro.kode_brg}"></td>
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${pro.name}"></td>
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${#numbers.formatDecimal(pro.price, 0, 'POINT', 0, 'POINT')}" th:id="price">
+                    </td>
+                    <td th:text="${sell.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(sell.subtotal, 0, 'POINT', 0, 'POINT')}" th:id="price"></td>
+                    <td><a th:href="@{/delete/{id}(id=${sell.id})}"
+                           onclick="return confirm('Are you sure you want to delete this item?');"><i
+                            class="bi bi-trash"></i></a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td th:text="${grand}" id="grand" name="grand" th:value="${grand}"></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>Bayar</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="col-auto">
+                            <input type="number" id="pay" name="pay" class="form-control">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+
+                            <button type="submit" class="btn btn-secondary" th:onclick="showResult()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                     class="bi bi-calculator" viewBox="0 0 16 16">
+                                    <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+                                </svg>
+
+                            </button>
+
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>Kembalian</td>
+                    <td></td>
+                    <td></td>
+                    <td id="cashback" name="cashback"></td>
+
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="window.print();">Print</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+    <script th:inline="javascript">
+
+<!--    function printing(){-->
+
+<!--     var divToPrint = document.getElementById('table');-->
+<!--      newWin = window.open("");-->
+<!--      newWin.document.write(divToPrint.outerHTML);-->
+<!--      newWin.document.write(pay.outerHTML);-->
+<!--      newWin.print();-->
+<!--      newWin.close();-->
+
+<!--    }-->
+
+    function showResult(){
+    var total = /*[[${grand}]]*/ 'default';
+    var pay = document.getElementById("pay").value;
+    var cashback = parseInt(pay-total);
+    document.getElementById("cashback").innerHTML = convertToRupiah(cashback);
+
+    }
+
+     var total = /*[[${grand}]]*/ 'default';
+     document.getElementById("grand").innerHTML = convertToRupiah(total);
+
+    function convertToRupiah(angka){
+	var rupiah = '';
+	var angkarev = angka.toString().split('').reverse().join('');
+	for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+	return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+    }
+
+
+
+    </script>
+</div>
+</body>
+
+</html>
+
+

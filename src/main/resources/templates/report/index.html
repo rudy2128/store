@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <title>report</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+           <div class="col-3 bg-light p-3 border">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="http://localhost:8989">
+                    <i class="bi bi-house-door"></i>
+                    Home</a>
+                <a class="nav-link" href="http://localhost:8989/product/">
+                    <i class="bi bi-boxes"></i>
+                    Product</a>
+                <a class="nav-link" href="http://localhost:8989/category/">
+                    <i class="bi bi-bookmark"></i>
+                    Category</a>
+                <a class="nav-link" href="http://localhost:8989/supplier/">
+                    <i class="bi bi-building"></i>
+                    Supplier</a>
+                <a class="nav-link" href="http://localhost:8989/login/">
+                    <i class="bi bi-person-fill"></i>
+                    User</a>
+                <a class="nav-link" href="http://localhost:8989/buy/">
+                    <i class="bi bi-card-list"></i>
+                    Pembelian</a>
+                <a class="nav-link" href="http://localhost:8989/customer/">
+                    <i class="bi bi-people"></i>
+                    Customer</a>
+                <a class="nav-link" href="http://localhost:8989/report/">
+                    <i class="bi bi-journal-text"></i>
+                    Laporan</a>
+            </nav>
+
+
+        </div>
+        <div class="col-9">
+            <h2 class="text mt-3">Laporan</h2>
+            <form class="search mt-3" th:action="@{/report/between}" method="get">
+                <input type="date" name="startDate" th:value="${startDate}" size="50" >
+                <input type="date" name="endDate" th:value="${endDate}" size="50" >
+                <button type="submit" class="btn btn-secondary" ><i class="bi bi-search"></i></button>
+                <button type="submit" class="btn btn-success" ><i class="bi bi-arrow-counterclockwise"></i></button>
+            </form>
+            <table class="table mt-5" th:id="table">
+                <thead>
+                <tr>
+                    <th>Kode brg</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Jumlah</th>
+                    <th>Subtotal</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sell : ${sellList}">
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${pro.kode_brg}"></td>
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${pro.name}"></td>
+                    <td th:each="pro : ${sell.products}"
+                        th:text="${#numbers.formatDecimal(pro.price, 0, 'POINT', 0, 'POINT')}"th:id="price">
+                    </td>
+                    <td th:text="${sell.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(sell.subtotal, 0, 'POINT', 0, 'POINT')}"th:id="price"></td>
+                    <td><a th:href="@{/delete/{id}(id=${sell.id})}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="bi bi-trash"></i></a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td th:each="sell : ${sells}"
+                            th:text="${#lists.size(sell.subtotal)}" id="grand" name="grand" th:value="${grand}" ></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <button onclick="window.print();">Print</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <title>add-category</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-3 bg-light p-3 border">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="http://localhost:8989">
+                    <i class="bi bi-house-door"></i>
+                    Home</a>
+                <a class="nav-link" href="http://localhost:8989/product/">
+                    <i class="bi bi-boxes"></i>
+                    Product</a>
+                <a class="nav-link" href="http://localhost:8989/category/">
+                    <i class="bi bi-bookmark"></i>
+                    Category</a>
+                <a class="nav-link" href="http://localhost:8989/supplier/">
+                    <i class="bi bi-building"></i>
+                    Supplier</a>
+                <a class="nav-link" href="http://localhost:8989/login/">
+                    <i class="bi bi-person-fill"></i>
+                    User</a>
+                <a class="nav-link" href="http://localhost:8989/buy/">
+                    <i class="bi bi-card-list"></i>
+                    Pembelian</a>
+                <a class="nav-link" href="http://localhost:8989/customer/">
+                    <i class="bi bi-people"></i>
+                    Customer</a>
+                <a class="nav-link" href="http://localhost:8989/report/">
+                    <i class="bi bi-journal-text"></i>
+                    Laporan</a>
+            </nav>
+
+        </div>
+        <div class="col-9">
+            <form action="#" th:action="@{/category/add-category}" th:object="${category}" method="post"
+                  xmlns:th="http://www.w3.org/1999/xhtml">
+                <h2 class="title mt-3">Input Category</h2>
+                <div class="row g-3 align-items-center mt-5">
+                    <div class="col-auto">
+                        <input type="text" th:field="*{code}" id="code" placeholder="Kode" class="form-control">
+                        <span th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" th:field="*{name_category}" id="name_category" placeholder="category name" class="form-control">
+                        <span th:if="${#fields.hasErrors('name_category')}" th:errors="*{name_category}"></span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="submit" value="Add Category">
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+  <meta charset="UTF-8">
+  <title>customers</title>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-3 bg-light p-3 border">
+      <nav class="nav flex-column">
+        <a class="nav-link" href="http://localhost:8989">
+          <i class="bi bi-house-door"></i>
+          Home</a>
+        <a class="nav-link" href="http://localhost:8989/product/">
+          <i class="bi bi-boxes"></i>
+          Product</a>
+        <a class="nav-link" href="http://localhost:8989/category/">
+          <i class="bi bi-bookmark"></i>
+          Category</a>
+        <a class="nav-link" href="http://localhost:8989/supplier/">
+          <i class="bi bi-building"></i>
+          Supplier</a>
+        <a class="nav-link" href="http://localhost:8989/login/">
+          <i class="bi bi-person-fill"></i>
+          User</a>
+        <a class="nav-link" href="http://localhost:8989/buy/">
+          <i class="bi bi-card-list"></i>
+          Pembelian</a>
+        <a class="nav-link" href="http://localhost:8989/customer/">
+          <i class="bi bi-people"></i>
+          Customer</a>
+        <a class="nav-link" href="http://localhost:8989/report/">
+          <i class="bi bi-journal-text"></i>
+          Laporan</a>
+      </nav>
+
+    </div>
+    <div class="col-9">
+      <h2 class="text mt-3">Data Customer</h2>
+
+      <form th:action="@{/customer/findByKeyword/{keyword}}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}"  placeholder="Search by name or phone" size="50" >
+        <button type="submit" class="btn btn-secondary" ><i class="bi bi-search"></i></button>
+        <button type="submit" class="btn btn-success" ><i class="bi bi-arrow-counterclockwise"></i></button>
+      </form>
+
+      <table class="table mt-5">
+        <thead>
+        <tr>
+          <td>Id Customer</td>
+          <th>Name</th>
+          <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customerList}">
+          <td th:text="${customer.id}"></td>
+          <td th:text="${customer.name}"></td>
+          <td th:text="${customer.phone}"></td>
+          <td><a th:href="@{/customer/edit/{id}(id=${customer.id})}"><i class="bi bi-pencil-square" alt="edit"></i></a></td>
+          <td><a th:href="@{/customer/delete/{id}(id=${customer.id})}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="bi bi-trash"></i></a></td>
+        </tr>
+        </tbody>
+      </table>
+      <p><a href="/customer/input">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+          <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+          <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+        </svg>
+      </a></p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
